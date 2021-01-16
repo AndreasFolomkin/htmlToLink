@@ -12,15 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HtmlToLink implements IHtmlToLink {
-    private List<Link> links = new ArrayList<>();
+   List<Link> links = new ArrayList<>();
 
 
-    @Override
-    public List<Link> getLinks(String path) throws IOException {
+      @Override
+      public List<Link> getLinks(String path) throws IOException {
 
-        File input = new File(path);         // get the file along the path
-        Document doc = Jsoup.parse(input, "UTF-8");  // parse a file into a document
-        Elements elements = doc.getElementsByAttributeValueMatching("data-asin", "\\w");        //select all products from the document to the list of elements
+         Elements elements = getElements(path);
+         if (elements == null) return null;
 
         for (int i = 0; i < elements.size(); i++) {
             String link = elements.get(i).getElementsByClass("a-link-normal a-text-normal").attr("href");     //select a link from each element
@@ -45,5 +44,15 @@ public class HtmlToLink implements IHtmlToLink {
             links.add(new Link(name, link, starRating1, rating));   //
         }
         return links;
+    }
+
+    private Elements getElements(String path) throws IOException {
+          if (path == null || path == ""){
+             return null;
+          }
+        File input = new File(path);  // get the file along the path
+        Document doc = Jsoup.parse(input, "UTF-8");  // parse a file into a document
+        Elements elements = doc.getElementsByAttributeValueMatching("data-asin", "\\w");        //select all products from the document to the list of elements
+        return elements;
     }
 }

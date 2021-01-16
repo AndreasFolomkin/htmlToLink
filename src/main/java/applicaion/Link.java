@@ -1,5 +1,7 @@
 package applicaion;
 
+import java.util.Objects;
+
 public class Link {
     private String name;
     private String link;
@@ -37,5 +39,21 @@ public class Link {
                    "starRating :"+starsRating+"\n"+
                    " rating : "+rating;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Link)) return false;
+        Link link1 = (Link) o;
+        return Objects.equals(getName(), link1.getName()) &&
+                Objects.equals(getLink(), link1.getLink()) &&
+                Objects.equals(getStarsRating(), link1.getStarsRating()) &&
+                Objects.equals(getRating(), link1.getRating());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getLink(), getStarsRating(), getRating());
     }
 }
